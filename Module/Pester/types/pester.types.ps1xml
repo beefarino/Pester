@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<Types> 
+    <Type> 
+        <Name>System.Object</Name> 
+        <Members> 
+            <ScriptProperty> 
+                <Name>should</Name> 
+                <GetScriptBlock>
+                    $value = $this
+                    $object = New-Object Object |
+                    Add-Member ScriptMethod be {
+                            param($expected)
+                            return ($expected -eq $this.actual)
+                            } -PassThru |
+                    Add-Member ScriptMethod have_count_of {
+                        param($expected_count)
+
+                        $count = 0
+                        $this.actual | % { $count += 1 }
+
+                        return ($expected_count -eq $count)
+
+                        } -PassThru |
+					Add-Member ScriptMethod contain {
+	                        param($items)
+
+							foreach( $item in $items )
+							{
+								if( $this.actual -notcontains $item ) 
+								{ 
+									return $false; 
+								}
+							}
+	                        return $true;
+                        } -PassThru |
+                    Add-Member ScriptMethod exist {
+                            return Test-Path $this.actual
+                        } -PassThru |
+                    Add-Member NoteProperty -Name actual -Value $null -PassThru |
+                    Add-Member ScriptProperty -Name ThisValue -Value { $this.actual } `
+                            {
+                                param($newactual)
+                                $this.actual = $newactual
+                            } -PassThru
+                    $object.ThisValue = $value
+                            
+                    return $object
+                </GetScriptBlock> 
+            </ScriptProperty> 
+        </Members> 
+    </Type> 
+</Types> 

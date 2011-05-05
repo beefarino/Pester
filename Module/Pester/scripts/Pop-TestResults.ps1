@@ -1,0 +1,1 @@
+﻿$global:testResultStack.pop();
