@@ -20,9 +20,10 @@ try
 Add-Type @'
 	public class PesterTestResult
 	{
-		public string Name;
 		public string Describing;
+		public string It;
 		public object Result;			
+		public object Exception;
 	}
 '@ 
 }

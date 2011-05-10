@@ -1,5 +1,5 @@
 ﻿[CmdletBinding()]
-param( $path = '.', $filePattern = "*.Tests.*" )
+param( $path = '.', $filePattern = "*.Tests.*", $fixture )
 
 begin
 {
@@ -23,7 +23,7 @@ end
 		try
 		{
 			Write-Verbose "running $_";
-			& $_.pspath;			
+			& $_.pspath $fixture;			
 		}
 		catch
 		{
